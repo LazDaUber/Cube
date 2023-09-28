@@ -2,14 +2,14 @@
     public class Cube {
         private Point2D _pos;
         private Vector3 _rot;
-        private Quad[] sides;
-        public Cube(int x, int y) : this(45,) { }
-        public Cube(int x, int y, Vector3 r) : this(x,y) { }
+        private List<Quad> _sides;
+        public Cube(int x, int y) : this(x, y, 45, 45, 45) { }
         public Cube(int x, int y, double rx, double ry, double rz) {
             _pos = new Point2D();
             _pos.X = x;
             _pos.Y = y;
             _rot = new Vector3(rx, ry, rz);
+            _sides = new List<Quad> { };
         }
         public Point2D Position { 
             get { 
@@ -22,14 +22,20 @@
             get {
                 return _rot;
             } set {
-                _rot = value;
+                _rot.X = value.X % 360;
+                _rot.Y = value.Y % 360;
+                _rot.Z = value.Z % 360;
             }
         }
         public void Draw() {
-
+            Quad s = new Quad();
+            s.Points = new Point2D[4]();
+            SplashKit.FillQuad(s);
         }
-        public void Rotate() {
-
+        public void Rotate(Vector3 rotateBy) {
+            _rot.X = (_rot.X + rotateBy.X) % 360;
+            _rot.Y = (_rot.Y + rotateBy.Y) % 360;
+            _rot.Z = (_rot.Z + rotateBy.Z) % 360;
         }
     }
 }
